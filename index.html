@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orbital — Real-Time Satellite Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "globe.gl": "https://esm.sh/globe.gl@2.32.0",
+      "satellite.js": "https://esm.sh/satellite.js@4.1.4"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <!-- Loading Screen -->
+    <div id="loading" class="loading-screen">
+      <div class="loading-content">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Initializing Orbital...</p>
+        <p class="loading-sub">Fetching TLE data for 20,000+ objects</p>
+      </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="main-layout" id="main-layout" style="display:none;">
+      <!-- Left Panel -->
+      <aside class="left-panel">
+        <div class="panel-header">
+          <div class="header-top">
+            <h1 class="app-title">Orbital</h1>
+            <span class="object-count" id="object-count">0 objects</span>
+          </div>
+          <div class="filter-bar">
+            <div class="filter-group">
+              <select id="category-filter" class="filter-select">
+                <option value="all">All Objects</option>
+                <option value="iss">ISS</option>
+                <option value="starlink">Starlink</option>
+                <option value="active">Active Satellites</option>
+                <option value="debris">Space Debris</option>
+              </select>
+            </div>
+            <button id="toggle-trails" class="icon-btn active" title="Toggle orbit trails">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </button>
+            <button id="toggle-labels" class="icon-btn active" title="Toggle labels">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="satellite-list" id="satellite-list"></div>
+      </aside>
+
+      <!-- Right Panel: Globe -->
+      <div class="right-panel">
+        <div id="globe-container"></div>
+        <div class="globe-overlay">
+          <div class="globe-hint">
+            <span class="kbd">Click</span> a satellite to track
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Panel (slides in when satellite selected) -->
+      <div class="info-panel" id="info-panel">
+        <button class="close-btn" id="close-info">×</button>
+        <div class="info-content" id="info-content"></div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="bottom-bar" id="bottom-bar">
+      <div class="bottom-left">
+        <div class="tracked-sat" id="tracked-sat">
+          <span class="tracking-dot"></span>
+          <span class="tracking-name">Select a satellite</span>
+        </div>
+      </div>
+      <div class="bottom-center">
+        <div class="location-setter">
+          <button id="set-location" class="text-btn">📍 Set My Location</button>
+          <span id="my-location" class="location-display"></span>
+        </div>
+      </div>
+      <div class="bottom-right">
+        <div class="time-display">
+          <span id="utc-time">UTC --:--:--</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location Modal -->
+    <div class="modal" id="location-modal">
+      <div class="modal-backdrop"></div>
+      <div class="modal-container">
+        <h3>Set Your Location</h3>
+        <p>Enter coordinates or city name to see satellite passes overhead.</p>
+        <div class="input-group">
+          <input type="text" id="location-input" placeholder="e.g. Paris, France or 48.8566, 2.3522" />
+          <button id="location-submit" class="btn-primary">Set Location</button>
+        </div>
+        <div class="location-presets">
+          <button data-lat="48.8566" data-lng="2.3522">Paris</button>
+          <button data-lat="40.7128" data-lng="-74.0060">New York</button>
+          <button data-lat="35.6762" data-lng="139.6503">Tokyo</button>
+          <button data-lat="51.5074" data-lng="-0.1278">London</button>
+          <button data-lat="-33.8688" data-lng="151.2093">Sydney</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

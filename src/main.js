@@ -208,8 +208,6 @@ function initGlobe() {
     .atmosphereColor('#1a3a5c')
     .atmosphereAltitude(0.25)
     .showGraticules(true)
-    .graticuleColor('#1a1a2e')
-    .graticuleOpacity(0.3)
     .pointsData([])
     .pointLat('lat')
     .pointLng('lng')
